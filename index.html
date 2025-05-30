@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sadhwik Munaga</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        .option-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        .option-btn:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Sadhwik Munaga's Webpage</h1>
+    <button class="option-btn" onclick="guessTheNumber()">1. Guess the Number</button>
+    <button class="option-btn" onclick="daysSurvived()">2. Days You Survived</button>
+    <button class="option-btn" onclick="daysUntilBirthday()">3. Days Until Next Birthday</button>
+
+    <div class="output" id="output"></div>
+
+    <script>
+        function guessTheNumber() {
+            let count = 0;
+            let score = 0;
+            let play = true;
+
+            while (play) {
+                const rd = Math.floor(Math.random() * 10) + 1;
+                const no = parseInt(prompt("Enter a number (1 to 10):"));
+                if (no < 1 || no > 10 || isNaN(no)) {
+                    alert("Out of range or invalid input!");
+                    break;
+                }
+
+                if (no === rd) {
+                    alert(`You won!\nYour choice: ${no}\nComputer choice: ${rd}`);
+                    count++;
+                    break;
+                } else {
+                    let dif = Math.abs(no - rd);
+                    let msg = "";
+                    if (dif >= 5 && dif <= 10) {
+                        msg = "Too high!";
+                    } else if (dif >= 3 && dif < 5) {
+                        msg = "Close!";
+                    } else if (dif >= 1 && dif < 3) {
+                        msg = "Too close!";
+                    }
+                    alert(`${msg}\nYour choice: ${no}\nComputer choice: ${rd}\nDifference: ${dif}`);
+                    score += dif;
+                    count++;
+                }
+                play = confirm("Do you want to continue?");
+            }
+
+            document.getElementById("output").innerText = `You tried: ${count} times\nYour score is: ${(count * 10) - score}/${count * 10}\nGame over. Thank you for playing!`;
+        }
+
+        function daysSurvived() {
+            const dobInput = prompt("Enter your birthdate (YYYY-MM-DD):");
+            const birthDate = new Date(dobInput);
+            const now = new Date();
+
+            if (isNaN(birthDate)) {
+                document.getElementById("output").innerText = "Invalid date format.";
+                return;
+            }
+
+            const survived = Math.floor((now - birthDate) / (1000 * 60 * 60 * 24));
+            document.getElementById("output").innerText = `You have survived: ${survived} days`;
+        }
+
+        function daysUntilBirthday() {
+            const dobInput = prompt("Enter your birthdate (YYYY-MM-DD):");
+            const birthDate = new Date(dobInput);
+            const now = new Date();
+
+            if (isNaN(birthDate)) {
+                document.getElementById("output").innerText = "Invalid date format.";
+                return;
+            }
+
+            let nextBirthday = new Date(now.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+
+            if (now > nextBirthday) {
+                nextBirthday.setFullYear(now.getFullYear() + 1);
+            }
+
+            const remaining = Math.ceil((nextBirthday - now) / (1000 * 60 * 60 * 24));
+            document.getElementById("output").innerText = `${remaining} days remain until your next birthday.`;
+        }
+    </script>
+</body>
+</html>
